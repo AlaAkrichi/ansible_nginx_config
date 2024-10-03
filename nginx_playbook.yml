@@ -1,0 +1,30 @@
+---
+  - name: Install nginx
+    hosts: workers
+    become: yes
+    tasks:
+      - name: install nginx
+        ansible.builtin.apt:
+            name: "nginx"
+            update_cache: no
+            state: latest
+      - name: start and enable nginx
+        systemd:
+             name:  nginx
+             state: 'started'
+             enabled: yes
+      - name: copy config file
+        copy:
+           src: './nginx.conf'
+           dest: '/etc/nginx/nginx.conf'
+           mode: '0664'
+      - name: copy index to workes
+        copy:
+           src: './index.html'
+           dest: '/usr/share/nginx/html'
+           mode: '0664'
+      - name:  restart nginx
+        systemd:
+             name: nginx
+             state: restarted
+             enabled: yes
