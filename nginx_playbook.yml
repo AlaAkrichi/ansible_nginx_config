@@ -1,7 +1,7 @@
 ---
   - name: Install nginx
     hosts: workers
-    become: yes
+    become: true
     tasks:
       - name: install nginx
         ansible.builtin.apt:
